@@ -20,7 +20,6 @@ import com.techacademy.entity.Employee;
 import com.techacademy.service.EmployeeService;
 import com.techacademy.service.UserDetail;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,13 +34,13 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
- // 従業員一覧画面
+    // 従業員一覧画面
     @GetMapping
     public String list(Model model) {
-        List<Employee> employeeList = employeeService.findAll(); // 従業員リストを取得
-        int listSize = employeeList.size(); // 従業員リストのサイズを取得
-        model.addAttribute("listSize", listSize); // 従業員リストのサイズを追加
-        model.addAttribute("employeeList", employeeList); // 従業員リストを追加
+
+        model.addAttribute("listSize", employeeService.findAll().size());
+        model.addAttribute("employeeList", employeeService.findAll());
+
         return "employees/list";
     }
 
@@ -49,7 +48,7 @@ public class EmployeeController {
     @GetMapping(value = "/{code}/")
     public String detail(@PathVariable String code, Model model) {
 
-        model.addAttribute("employee");
+        model.addAttribute("employee", employeeService.findByCode(code));
         return "employees/detail";
     }
 
@@ -108,9 +107,12 @@ public class EmployeeController {
     public String edit(@PathVariable String code, Model model) {
         Employee employee = employeeService.findByCode(code);
         model.addAttribute("employee", employee);
-        return "employees/update"; // 遷移先のビュー名を返す
-    }
 
+        // 権限の選択肢を設定
+        model.addAttribute("roles", com.techacademy.entity.Employee.Role.values());
+
+        return "employees/edit";
+    }
 
     // 従業員更新処理
     @PostMapping(value = "/{code}/update")
