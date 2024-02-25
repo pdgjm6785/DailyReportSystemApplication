@@ -26,12 +26,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- 日報一覧データを表示 -->
-                                        <tr th:each="report : ${reportList}">
-                                            <td class="align-middle" th:text="${report.employee.name}"></td>
-                                            <td class="align-middle" th:text="${#dates.format(report.date, 'yyyy-MM-dd')}"></td>
-                                            <td class="align-middle" th:text="${report.title}"></td>
-                                            <td class="align-middle"><a th:href="@{/reports/{id}/(id=${report.id})}" class="btn btn-primary">詳細</a></td>
+                                        <tr th:each="employee:${employeeList}">
+                                            <td class="align-middle" th:text="${employee.code}"></td>
+                                            <td class="align-middle" th:text="${employee.name}"></td>
+                                            <td class="align-middle">
+                                                <a th:href="@{'/employees/' + ${employee.code} + '/detail'}" class="btn btn-primary">詳細</a>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
