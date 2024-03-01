@@ -24,7 +24,7 @@ public class ReportService {
         return reportRepository.findAll();
     }
 
-    public Report findReportById(Long id) {
+    public Report findReportById(Integer id) {
         return reportRepository.findById(id)
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -33,7 +33,7 @@ public class ReportService {
         return reportRepository.save(report);
     }
 
-    public void deleteReport(Long id) {
+    public void deleteReport(Integer id) {
         if (reportRepository.existsById(id)) {
             reportRepository.deleteById(id);
         } else {

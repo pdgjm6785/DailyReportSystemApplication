@@ -14,55 +14,34 @@
             </div>
 
             <div class="mb-3 col-12 col-xxl-6">
-
                 <div class="col-xl-12">
                     <div class="card">
                         <div class="card-body mb-5">
-
                             <div class="wizard wizard-success mb-4">
-
                                 <form action="#" method="post">
-
-
-                                    <div class="mb-3">
-                                        <label for="reportDate" class="form-label">日付</label>
+                                    <div class="mb-3 d-flex">
+                                        <label for="reportDate" class="form-label me-2 w-25">日付</label>
                                         <input type="text" class="form-control" id="reportDate" th:value="${report.reportDate}" disabled>
                                     </div>
-
-                                    <div class="mb-3">
-                                        <label for="employeeName" class="form-label">氏名</label>
+                                    <div class="mb-3 d-flex">
+                                        <label for="employeeName" class="form-label me-2 w-25">氏名</label>
                                         <input type="text" class="form-control" id="employeeName" th:value="${report.employee.name}" disabled>
                                     </div>
-
-                                    <div class="mb-3">
-                                        <label for="title" class="form-label">タイトル</label>
+                                    <div class="mb-3 d-flex">
+                                        <label for="title" class="form-label me-2 w-25">タイトル</label>
                                         <input type="text" class="form-control" id="title" th:value="${report.title}" disabled>
                                     </div>
-
-                                    <div class="mb-3">
-                                        <label for="content" class="form-label">内容</label>
+                                    <div class="mb-3 d-flex">
+                                        <label for="content" class="form-label me-2 w-25">内容</label>
                                         <textarea class="form-control" id="content" rows="3" disabled th:text="${report.content}"></textarea>
                                     </div>
-
-                                    <div class="mb-3">
-                                        <label for="createdAt" class="form-label">登録日時</label>
+                                    <div class="mb-3 d-flex">
+                                        <label for="createdAt" class="form-label me-2 w-25">登録日時</label>
                                         <input type="text" class="form-control" id="createdAt" th:value="${#temporals.format(report.createdAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
                                     </div>
-
-                                    <div class="mb-3">
-                                        <label for="updatedAt" class="form-label">更新日時</label>
+                                    <div class="mb-3 d-flex">
+                                        <label for="updatedAt" class="form-label me-2 w-25">更新日時</label>
                                         <input type="text" class="form-control" id="updatedAt" th:value="${#temporals.format(report.updatedAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
-                                    </div>
-
-
-                                    <div class="mb-3">
-                                        <label for="createdAt" class="form-label">登録日時</label>
-                                        <input type="text" class="form-control" id="createdAt" th:value="${#temporals.format(report.createdAt, 'yyyy-MM-dd HH:mm:ss')}" disabled>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="updatedAt" class="form-label">更新日時</label>
-                                        <input type="text" class="form-control" id="updatedAt" th:value="${#temporals.format(report.updatedAt, 'yyyy-MM-dd HH:mm:ss')}" disabled>
                                     </div>
 
                                     <div class="mt-5 row g-1">
@@ -82,14 +61,11 @@
 
                                 <span th:if="${deleteError} neq null" th:text="${deleteError}" class="text-danger"></span>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
-
 </html>

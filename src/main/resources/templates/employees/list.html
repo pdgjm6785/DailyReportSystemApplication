@@ -30,7 +30,7 @@
                                             <td class="align-middle" th:text="${employee.code}"></td>
                                             <td class="align-middle" th:text="${employee.name}"></td>
                                             <td class="align-middle">
-                                                <a th:href="@{'/employees/' + ${employee.code} + '/detail'}" class="btn btn-primary">詳細</a>
+                                            <td class="align-middle"><a th:href="@{/employees/{code}/(code=${employee.code})}" class="btn btn-primary">詳細</a></td>
                                             </td>
                                         </tr>
                                     </tbody>

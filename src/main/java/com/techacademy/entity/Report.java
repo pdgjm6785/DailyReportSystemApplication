@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,7 +13,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,7 +27,7 @@ public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "report_date", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd") // 日付のフォーマットを指定
@@ -55,13 +53,9 @@ public class Report {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "employee_code", referencedColumnName = "code", nullable = false)
     private Employee employee;
 
-    @Column(name = "password")
-    @NotBlank(message = "パスワードを入力してください")
-    @Size(min = 8, max = 16, message = "8文字以上16文字以下で入力してください")
-    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "パスワードは半角英数字のみで入力してください")
-    private String password;
+
 }

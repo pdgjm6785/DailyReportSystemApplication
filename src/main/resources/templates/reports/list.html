@@ -26,11 +26,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="employee:${employeeList}">
-                                            <td class="align-middle" th:text="${employee.code}"></td>
-                                            <td class="align-middle" th:text="${employee.name}"></td>
+                                    <!-- 2.25修正 -->
+                                        <tr th:each="report:${reportList}">
+                                            <td class="align-middle" th:text="${report.employee.name}"></td>
+                                            <td class="align-middle" th:text="${report.reportDate}"></td>
+                                            <td class="align-middle" th:text="${report.title}"></td>
                                             <td class="align-middle">
-                                                <a th:href="@{'/employees/' + ${employee.code} + '/detail'}" class="btn btn-primary">詳細</a>
+                                                <a th:href="@{'/reports/' + ${report.id} + '/'}" class="btn btn-primary">詳細</a>
+                                    <!-- 2.25修正 -->
                                             </td>
                                         </tr>
                                     </tbody>

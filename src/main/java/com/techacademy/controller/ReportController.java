@@ -1,6 +1,7 @@
 package com.techacademy.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,7 +11,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.techacademy.entity.Report;
 import com.techacademy.service.ReportService;
 
+import jakarta.persistence.Column;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,8 +32,9 @@ public class ReportController {
     // 日報一覧画面を表示するメソッド
     @GetMapping("")
     public String listReports(Model model) {
-        List<Report> reports = reportService.findAllReports();
-        model.addAttribute("reports", reports);
+        List<Report> reportList = reportService.findAllReports();
+        model.addAttribute("reportList", reportList);
+        model.addAttribute("listSize", reportList.size());
         return "reports/list";
     }
 
@@ -53,8 +58,8 @@ public class ReportController {
     }
 
     // 日報詳細画面を表示するメソッド
-    @GetMapping("/{id}")
-    public String showReportDetail(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/{id}/")
+    public String showReportDetail(@PathVariable("id") Integer id, Model model) {
         Report report = reportService.findReportById(id);
         if (report == null) {
             return "redirect:/reports";
@@ -65,9 +70,10 @@ public class ReportController {
 
     // 日報削除処理
     @PostMapping("/{id}/delete")
-    public String deleteReport(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+    public String deleteReport(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         reportService.deleteReport(id);
         redirectAttributes.addFlashAttribute("successMessage", "日報を削除しました");
         return "redirect:/reports";
     }
+
 }
