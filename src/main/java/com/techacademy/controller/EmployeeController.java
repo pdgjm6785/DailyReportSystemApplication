@@ -64,10 +64,6 @@ public class EmployeeController {
     public String add(@Validated Employee employee, BindingResult res, Model model) {
 
         // パスワード空白チェック
-        /*
-         * エンティティ側の入力チェックでも実装は行えるが、更新の方でパスワードが空白でもチェックエラーを出さずに
-         * 更新出来る仕様となっているため上記を考慮した場合に別でエラーメッセージを出す方法が簡単だと判断
-         */
         if ("".equals(employee.getPassword())) {
             // パスワードが空白だった場合
             model.addAttribute(ErrorMessage.getErrorName(ErrorKinds.BLANK_ERROR),
@@ -81,9 +77,6 @@ public class EmployeeController {
         if (res.hasErrors()) {
             return create(employee);
         }
-
-        // 論理削除を行った従業員番号を指定すると例外となるためtry~catchで対応
-        // (findByIdでは削除フラグがTRUEのデータが取得出来ないため)
         try {
             ErrorKinds result = employeeService.save(employee);
 
@@ -140,7 +133,7 @@ public class EmployeeController {
             model.addAttribute("updateError", ErrorMessage.getErrorValue(ErrorKinds.DUPLICATE_EXCEPTION_ERROR));
             return edit(code, model);
         }
-
+     //更新画面から詳細画面呼び出し？
         return "redirect:/employees/" + code + "/";
     }
 

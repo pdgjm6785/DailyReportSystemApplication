@@ -15,6 +15,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
@@ -22,6 +23,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "reports")
+@SQLRestriction("delete_flg = false")
 public class Report {
 
     @Id
@@ -30,7 +32,7 @@ public class Report {
     private Integer id;
 
     @Column(name = "report_date", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd") // 日付のフォーマットを指定
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "日付を入力してください")
     private LocalDate reportDate;
 
@@ -55,6 +57,9 @@ public class Report {
 
     @ManyToOne
     @JoinColumn(name = "employee_code", referencedColumnName = "code", nullable = false)
+
+    // @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false)
+
     private Employee employee;
 
 

@@ -44,11 +44,10 @@
                                         <input type="text" class="form-control" id="updatedAt" th:value="${#temporals.format(report.updatedAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
                                     </div>
 
-                                        <div class="mt-5 row g-1">
+                                    <div class="mt-5 row g-1">
                                         <div class="col-auto">
                                             <a th:href="@{'/reports/' + ${report.id} + '/update'}" class="btn btn-primary">更新</a>
                                         </div>
-
                                         <div class="col-auto">
                                             <form th:action="@{'/reports/' + ${report.id} + '/delete'}" method="post">
                                                 <input type="submit" value="削除" class="btn btn-primary">

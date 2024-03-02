@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.techacademy.constants.ErrorKinds;
 import com.techacademy.entity.Employee;
+import com.techacademy.entity.Report;
 import com.techacademy.repository.EmployeeRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,6 +68,19 @@ public class EmployeeService {
 
         return ErrorKinds.SUCCESS;
     }
+
+
+//        削除対象の従業員（employee）に紐づいている、日報のリスト（reportList）を取得
+//        List<Report> reportList = ReportService.findByEmployee();
+//
+//         日報のリスト（reportList）を拡張for文を使って繰り返し
+//         for (Report report : reportList) {
+//            // 日報（report）のIDを指定して、日報情報を削除
+//              ReportService.delete(report.getId());
+//         }
+//         return ErrorKinds.SUCCESS;
+//         }
+
 
     // 従業員一覧表示処理
     public List<Employee> findAll() {
