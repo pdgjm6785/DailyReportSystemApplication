@@ -72,11 +72,12 @@ public class ReportController {
     //3.2 2000追加
     // 日報詳細画面から日報更新画面を表示するメソッド
     @GetMapping("/{id}/update")
-    public String updateReportForm(@PathVariable ("id")Integer id, Model model) {
+    public String updateReportForm(@PathVariable("id") Integer id, Model model) {
         Report report = reportService.findReportById(id);
         model.addAttribute("report", report);
         return "reports/update";
     }
+
 
     // 日報削除処理
     @PostMapping("/{id}/delete")
