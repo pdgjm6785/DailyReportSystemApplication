@@ -91,11 +91,11 @@ public class EmployeeController {
             return create(employee);
         }
 
-        return "redirect:/employees";
+         return "redirect:/employees";
     }
 
     // （chapter6課題作成ここから1.28〜30）//従業員更新画面〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜
-    // 従業員更新画面
+
     @GetMapping(value = "/{code}/update")
     public String edit(@PathVariable String code, Model model) {
         Employee employee = employeeService.findByCode(code);
