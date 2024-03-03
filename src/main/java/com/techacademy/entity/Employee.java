@@ -67,4 +67,9 @@ public class Employee {
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Report> reportList; // 日報エンティティを参照するフィールド
 
+    public void deleteByEmployee(Employee employee) {
+        // TODO 自動生成されたメソッド・スタブ
+
+    }
+
 }

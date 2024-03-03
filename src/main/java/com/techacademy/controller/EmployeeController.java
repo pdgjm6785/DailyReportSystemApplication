@@ -133,7 +133,7 @@ public class EmployeeController {
             model.addAttribute("updateError", ErrorMessage.getErrorValue(ErrorKinds.DUPLICATE_EXCEPTION_ERROR));
             return edit(code, model);
         }
-     //更新画面から詳細画面呼び出し？
+     //更新画面から詳細画面呼び出し
         return "redirect:/employees/" + code + "/";
     }
 

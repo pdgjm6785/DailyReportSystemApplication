@@ -59,7 +59,7 @@ public class EmployeeService {
         return ErrorKinds.SUCCESS;
     }
     //3.3修正中〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜
-    // 従業員削除
+ // 従業員削除
     @Transactional
     public ErrorKinds delete(String code, UserDetail userDetail) {
 
@@ -67,27 +67,32 @@ public class EmployeeService {
         if (code.equals(userDetail.getEmployee().getCode())) {
             return ErrorKinds.LOGINCHECK_ERROR;
         }
+
         Employee employee = findByCode(code);
+        if (employee == null) {
+            return ErrorKinds.NOT_FOUND_ERROR;
+        }
+
+        /* 削除対象の従業員に紐づいている日報情報の削除：ここから */
+
+        // 削除対象の従業員に紐づいている、日報のリスト（reportList）を取得
+        List<Report> reportList = employee.getReportList();
+
+        // 日報のリスト（reportList）を拡張for文を使って繰り返し
+        for (Report report : reportList) {
+            // 日報（report）のIDを指定して、日報情報を削除
+            reportRepository.delete(report);
+        }
+
+        /* 削除対象の従業員に紐づいている日報情報の削除：ここまで */
+
+        // 従業員情報を論理削除
         LocalDateTime now = LocalDateTime.now();
         employee.setUpdatedAt(now);
         employee.setDeleteFlg(true);
 
         return ErrorKinds.SUCCESS;
     }
-
-
-//        削除対象の従業員（employee）に紐づいている、日報のリスト（reportList）を取得
-//        List<Report> reportList = ReportService.findByEmployee();
-//
-//         日報のリスト（reportList）を拡張for文を使って繰り返し
-//         for (Report report : reportList) {
-//            // 日報（report）のIDを指定して、日報情報を削除
-//              ReportService.delete(report.getId());
-//         }
-//         return ErrorKinds.SUCCESS;
-//         }
-
-
     // 従業員一覧表示処理
     public List<Employee> findAll() {
         return employeeRepository.findAll();
