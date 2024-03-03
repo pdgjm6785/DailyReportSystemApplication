@@ -23,7 +23,6 @@ import lombok.Data;
 @Table(name = "employees")
 public class Employee {
 
-
     public enum Role {
         GENERAL("一般"), ADMIN("管理者");
 
@@ -66,6 +65,6 @@ public class Employee {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    private List<Report> reportList;
+    private List<Report> reportList; // 日報エンティティを参照するフィールド
 
 }
