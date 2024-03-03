@@ -1,5 +1,6 @@
 package com.techacademy.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -19,7 +20,6 @@ public class ReportService {
 
     private final ReportRepository reportRepository;
 
-
     @Autowired
     public ReportService(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
@@ -31,10 +31,15 @@ public class ReportService {
 
     public Report findReportById(Integer id) {
         return reportRepository.findById(id)
-                .orElseThrow(NoSuchElementException::new);
+                .orElse(null); // NoSuchElementExceptionをスローしないように変更
     }
+
     @Transactional
+
     public ErrorKinds save(Report report) {
+        if (reportRepository.existByEmployeeAndReportDate(report.getEmployee(), report.getReportDate())) {
+            return ErrorKinds.DATECHECK_ERROR;
+        }
 
         report.setDeleteFlg(false);
 
@@ -45,6 +50,7 @@ public class ReportService {
         reportRepository.save(report);
         return ErrorKinds.SUCCESS;
     }
+
     public Report saveOrUpdateReport(Report report) {
         return reportRepository.save(report);
     }
@@ -58,6 +64,9 @@ public class ReportService {
         Report report = option.orElse(null);
         return report;
     }
+
+
+
 
     // 従業員に紐づく日報情報を取得するメソッドを追加
     public List<Report> findByEmployee(Employee employee) {
@@ -86,4 +95,6 @@ public class ReportService {
                 return ErrorKinds.NOT_FOUND_ERROR;
             }
     }
+
+
 }

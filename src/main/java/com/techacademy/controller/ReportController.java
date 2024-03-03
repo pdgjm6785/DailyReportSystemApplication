@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techacademy.constants.ErrorKinds;
+import com.techacademy.constants.ErrorMessage;
 import com.techacademy.entity.Employee;
 import com.techacademy.entity.Report;
 import com.techacademy.service.ReportService;
@@ -53,13 +54,17 @@ public class ReportController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute("report") @Valid Report report, BindingResult result, RedirectAttributes redirectAttributes,Model model,@AuthenticationPrincipal UserDetail userDetail) {
-        if (result.hasErrors()) {
+    public String add(@ModelAttribute("report") @Valid Report report, BindingResult res, RedirectAttributes redirectAttributes,Model model,@AuthenticationPrincipal UserDetail userDetail) {
+        if (res.hasErrors()) {
             return create(report, model ,userDetail);
         }
         report.setEmployee(userDetail.getEmployee()); // ログイン中の従業員情報をセット
-        reportService.save(report); // レポートを保存または更新
-        redirectAttributes.addFlashAttribute("successMessage", "日報を登録しました");
+        ErrorKinds result = reportService.save(report);
+
+        if (ErrorMessage.contains(result)) {
+            model.addAttribute(ErrorMessage.getErrorName(result), ErrorMessage.getErrorValue(result));
+            return create(report, model ,userDetail);
+        }
         return "redirect:/reports";
     }
 
@@ -82,15 +87,28 @@ public class ReportController {
         return "reports/update";
     }
 
-
     // 日報削除処理
-    @Transactional("/{id}/delete")
+    @PostMapping("/{id}/delete")
     public String deleteReport(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         reportService.delete(id);
         redirectAttributes.addFlashAttribute("successMessage", "日報を削除しました");
         return "redirect:/reports";
     }
 
+    @GetMapping("hoge")
+    public String listReports(Model model, @AuthenticationPrincipal UserDetail userDetail) {
+        List<Report> reportList;
+        if (userDetail.getEmployee().getRole() == Employee.Role.GENERAL) {
+            // 一般権限のユーザーの場合、自分が登録した日報情報のみを表示
+            reportList = reportService.findByEmployee(userDetail.getEmployee());
+        } else {
+            // 管理者権限のユーザーの場合、他の従業員が登録したものを含めた全日報情報を表示
+            reportList = reportService.findAllReports();
+        }
+        model.addAttribute("reportList", reportList);
+        model.addAttribute("listSize", reportList.size());
+        return "reports/list";
+    }
 
     }
 
