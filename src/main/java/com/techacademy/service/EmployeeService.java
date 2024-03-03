@@ -27,13 +27,14 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ReportService reportservice;
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder) {
+    public EmployeeService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder ,ReportService reportservice) {
         this.employeeRepository = employeeRepository;
         this.passwordEncoder = passwordEncoder;
+        this.reportservice = reportservice;
     }
-
     // 従業員保存
     @Transactional
     public ErrorKinds save(Employee employee) {
@@ -81,9 +82,9 @@ public class EmployeeService {
         // 日報のリスト（reportList）を拡張for文を使って繰り返し
         for (Report report : reportList) {
             // 日報（report）のIDを指定して、日報情報を削除
-            reportRepository.delete(report);
+            reportservice.delete(report.getId());
         }
-
+        //reportService ×　、
         /* 削除対象の従業員に紐づいている日報情報の削除：ここまで */
 
         // 従業員情報を論理削除

@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.techacademy.constants.ErrorKinds;
 import com.techacademy.entity.Employee;
 import com.techacademy.entity.Report;
 import com.techacademy.service.ReportService;
@@ -19,7 +21,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/reports")
@@ -80,11 +84,13 @@ public class ReportController {
 
 
     // 日報削除処理
-    @PostMapping("/{id}/delete")
+    @Transactional("/{id}/delete")
     public String deleteReport(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         reportService.delete(id);
         redirectAttributes.addFlashAttribute("successMessage", "日報を削除しました");
         return "redirect:/reports";
     }
 
-}
+
+    }
+

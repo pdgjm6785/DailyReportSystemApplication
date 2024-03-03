@@ -18,7 +18,6 @@
                     <div class="card">
                         <div class="card-body mb-5">
                             <div class="wizard wizard-success mb-4">
-                                <form action="#" method="post">
                                     <div class="mb-3 d-flex">
                                         <label for="reportDate" class="form-label me-2 w-25">日付</label>
                                         <input type="text" class="form-control" id="reportDate" th:value="${report.reportDate}" disabled>
@@ -50,7 +49,8 @@
                                         </div>
 
                                         <div class="col-auto">
-                                            <form th:action="@{'/reports/' + ${report.id} + '/delete'}" method="post">
+                                            <form name="form" th:action="@{/reports/{id}/delete(id=${report.id})}" th:method="post">
+
                                                 <input type="submit" value="削除" class="btn btn-primary">
                                             </form>
                                         </div>
@@ -58,7 +58,6 @@
                                             <a href="/reports" class="btn btn-primary">戻る</a>
                                         </div>
                                     </div>
-                                </form>
 
                                 <span th:if="${deleteError} neq null" th:text="${deleteError}" class="text-danger"></span>
                             </div>

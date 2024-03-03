@@ -19,6 +19,7 @@ public class ReportService {
 
     private final ReportRepository reportRepository;
 
+
     @Autowired
     public ReportService(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
@@ -35,12 +36,6 @@ public class ReportService {
     @Transactional
     public ErrorKinds save(Report report) {
 
-
-        // 従業員番号重複チェック
-//        if (findByCode(employee.getCode()) != null) {
-//            return ErrorKinds.DUPLICATE_ERROR;
-//        }
-
         report.setDeleteFlg(false);
 
         LocalDateTime now = LocalDateTime.now();
@@ -54,6 +49,7 @@ public class ReportService {
         return reportRepository.save(report);
     }
 
+
     // 1件を検索
     public Report findById(Integer id) {
         // findByIdで検索
@@ -63,17 +59,31 @@ public class ReportService {
         return report;
     }
 
-    public ErrorKinds delete(Integer id) {
-        Report report = findById(id);
-        LocalDateTime now = LocalDateTime.now();
-        report.setUpdatedAt(now);
-        report.setDeleteFlg(true);
-
-        return ErrorKinds.SUCCESS;
-    }
-
     // 従業員に紐づく日報情報を取得するメソッドを追加
     public List<Report> findByEmployee(Employee employee) {
         return reportRepository.findByEmployee(employee);
+    }
+    @Transactional
+    public ErrorKinds delete(Integer id) {
+
+            // 削除対象の日報を取得
+            Optional<Report> optionalReport = reportRepository.findById(id);
+
+            // 日報が存在するかチェック
+            if (optionalReport.isPresent()) {
+                Report report = optionalReport.get();
+
+                // 日報を論理削除
+                report.setDeleteFlg(true);
+                report.setUpdatedAt(LocalDateTime.now());
+
+                // データベースから日報を削除
+                reportRepository.save(report);
+
+                return ErrorKinds.SUCCESS;
+            } else {
+                // 削除対象の日報が見つからない場合はエラーを返す
+                return ErrorKinds.NOT_FOUND_ERROR;
+            }
     }
 }
