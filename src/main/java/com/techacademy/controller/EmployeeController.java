@@ -107,7 +107,7 @@ public class EmployeeController {
         return "employees/edit";
     }
 
-    // 従業員更新処理
+    // 従業員更新処理~~コピーここから
     @PostMapping(value = "/{code}/update")
     public String update(@PathVariable String code, @Validated Employee employee, BindingResult res, Model model) {
         // パスワードのバリデーション
@@ -150,7 +150,7 @@ public class EmployeeController {
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
-
+    //コピーここまで〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜
     // （chapter6課題作成ここまで）〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜
 
     // 従業員削除処理

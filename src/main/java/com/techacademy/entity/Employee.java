@@ -14,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length;
 
 import lombok.Data;
@@ -21,6 +23,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "employees")
+@SQLRestriction("delete_flg = false")
 public class Employee {
 
     public enum Role {
@@ -65,11 +68,7 @@ public class Employee {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    private List<Report> reportList; // 日報エンティティを参照するフィールド
+    private List<Report> reportList;
 
-    public void deleteByEmployee(Employee employee) {
-        // TODO 自動生成されたメソッド・スタブ
-
-    }
 
 }

@@ -31,13 +31,11 @@ public class ReportService {
 
     public Report findReportById(Integer id) {
         return reportRepository.findById(id)
-                .orElse(null); // NoSuchElementExceptionをスローしないように変更
+                .orElse(null);
     }
-
     @Transactional
-
     public ErrorKinds save(Report report) {
-        if (reportRepository.existByEmployeeAndReportDate(report.getEmployee(), report.getReportDate())) {
+        if (reportRepository.existsByEmployeeAndReportDate(report.getEmployee(), report.getReportDate())) {
             return ErrorKinds.DATECHECK_ERROR;
         }
 
@@ -64,9 +62,6 @@ public class ReportService {
         Report report = option.orElse(null);
         return report;
     }
-
-
-
 
     // 従業員に紐づく日報情報を取得するメソッドを追加
     public List<Report> findByEmployee(Employee employee) {
@@ -95,6 +90,37 @@ public class ReportService {
                 return ErrorKinds.NOT_FOUND_ERROR;
             }
     }
+//修正中３．５
+//    @Transactional
+//    public ErrorKinds updateEmployee(Integer id, Employee updatedEmployee) {
+//        // 更新対象の従業員を検索
+//        Employee existingEmployee = employeeRepository.findById(id)
+//                .orElse(null);
+//
+//        // 更新対象の従業員が存在しない場合はエラー
+//        if (existingEmployee == null) {
+//            return ErrorKinds.NOT_FOUND_ERROR;
+//        }
+//
+//        // 今の日付を取得
+//        LocalDateTime now = LocalDateTime.now();
+//
+//        // 同じユーザーかつ同じ日付かつ今のIDと一致するものを更新するロジック
+//        if (existingEmployee.getCode().equals(updatedEmployee.getCode()) &&
+//                existingEmployee.getCreatedAt().toLocalDate().isEqual(updatedEmployee.getCreatedAt().toLocalDate()) &&
+//                existingEmployee.getcode().equals(id)) {
+//            existingEmployee.setName(updatedEmployee.getName());
+//            existingEmployee.setPassword(updatedEmployee.getPassword());
+//            existingEmployee.setRole(updatedEmployee.getRole());
+//            existingEmployee.setUpdatedAt(now);
+//            employeeRepository.save(existingEmployee);
+//            return ErrorKinds.SUCCESS;
+//        } else {
+//            return ErrorKinds.UPDATE_ERROR; // 更新できない場合のエラー
+//        }
+//    }
+//
+   //修正中ここまで
 
 
 }
