@@ -50,12 +50,12 @@ public class ReportService {
     }
     @Transactional
     public ErrorKinds update(Report report) {
+     // 更新対象の従業員を検索
+        Report existingReport = findReportById(report.getId());
+
         if (reportRepository.existsByEmployeeAndReportDateAndIdNot(report.getEmployee(), report.getReportDate(),report.getId())) {
             return ErrorKinds.DATECHECK_ERROR;
         }
-        // 更新対象の従業員を検索
-        Report existingReport = findReportById(report.getId());
-
         // 更新対象の従業員が存在しない場合はエラー
         if (existingReport == null) {
             return ErrorKinds.NOT_FOUND_ERROR;

@@ -82,22 +82,18 @@ public class ReportController {
     }
     //3.2 2000追加
     //日報詳細画面から日報更新画面を表示するメソッド//テキストをみてURLを修正する。
-    @GetMapping("/{id}/edit")
+    @GetMapping("/{id}/update")
     public String edit(@PathVariable("id") Integer id, Model model ,Report report) {
 
         if (id!=null) {
             report = reportService.findReportById(id);
-
-
         }
-
         model.addAttribute("report", report);
         return "reports/update";
     }
 
-
     // 従業員更新処理//修正3.5
-    @PostMapping(value = "/{code}/update")
+    @PostMapping(value = "/{iD}/update")
     public String update(@PathVariable Integer id, @ModelAttribute("report") @Validated Report report,
             BindingResult res, RedirectAttributes redirectAttributes ,Model model) {
         //修正前
