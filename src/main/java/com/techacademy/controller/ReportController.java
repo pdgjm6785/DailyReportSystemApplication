@@ -83,54 +83,38 @@ public class ReportController {
     //3.2 2000追加
     //日報詳細画面から日報更新画面を表示するメソッド//テキストをみてURLを修正する。
     @GetMapping("/{id}/edit")
-    public String updateReportForm(@PathVariable("id") Integer id, Model model) {
-        Report report = reportService.findReportById(id);
+    public String edit(@PathVariable("id") Integer id, Model model ,Report report) {
+
+        if (id!=null) {
+            report = reportService.findReportById(id);
+
+
+        }
+
         model.addAttribute("report", report);
         return "reports/update";
     }
-//
-//
-//    // 従業員更新処理//修正3.5１//メンタリングで直す箇所
-//    @PostMapping(value = "/{code}/update")
-//    public String update(@PathVariable Integer id, @ModelAttribute("employee") @Validated Employee employee,
-//            BindingResult res, RedirectAttributes redirectAttributes) {
-//        //修正前
-//        if (res.hasErrors()) {
-//            return update(code, model);
-//        }
-//            //EmployeeServiceのupdateメソッドの呼び出し
-//            ErrorKinds result = reportService.update(code, employee);
-//
-//            if (ErrorMessage.contains(result)) {
-//                model.addAttribute("updateError", ErrorMessage.getErrorValue(result));
-//                return update(code, model);
-//            }
-//
-//     //更新画面から詳細画面呼び出し
-//        return "redirect:/employees/" + code + "/";
-//    }
 
 
-////自分で考えた修正以下＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-//        if (res.hasErrors()) {
-//            // エラーがある場合は更新画面に戻る
-//            return "employees/update";
-//        }
-//
-//        // ロジックの実行
-//        ErrorKinds result = reportService.updateReports(id, employee);
-//
-//        if (ErrorMessage.contains(result)) {
-//            // エラーがある場合は更新画面にエラーメッセージを表示して戻る
-//            redirectAttributes.addFlashAttribute("updateError", ErrorMessage.getErrorValue(result));
-//            return "redirect:/employees/" + id + "/edit";
-//        }
-//
-//        // 成功時は詳細画面にリダイレクト
-//        return "redirect:/employees/" + id + "/";
-//    }
-//  //自分で考えた修正以下＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+    // 従業員更新処理//修正3.5
+    @PostMapping(value = "/{code}/update")
+    public String update(@PathVariable Integer id, @ModelAttribute("report") @Validated Report report,
+            BindingResult res, RedirectAttributes redirectAttributes ,Model model) {
+        //修正前
+        if (res.hasErrors()) {
+            return edit(null, model, report);
+        }
+            //EmployeeServiceのupdateメソッドの呼び出し
+            ErrorKinds result = reportService.update(report);
 
+            if (ErrorMessage.contains(result)) {
+                model.addAttribute(ErrorMessage.getErrorName(result), ErrorMessage.getErrorValue(result));
+                return edit(null, model, report);
+            }
+
+     //更新画面から詳細画面呼び出し
+        return "redirect:/reports/";
+    }
 
 
     // 日報削除処理

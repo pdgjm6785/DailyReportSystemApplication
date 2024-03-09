@@ -48,9 +48,26 @@ public class ReportService {
         reportRepository.save(report);
         return ErrorKinds.SUCCESS;
     }
+    @Transactional
+    public ErrorKinds update(Report report) {
+        if (reportRepository.existsByEmployeeAndReportDateAndIdNot(report.getEmployee(), report.getReportDate(),report.getId())) {
+            return ErrorKinds.DATECHECK_ERROR;
+        }
+        // 更新対象の従業員を検索
+        Report existingReport = findReportById(report.getId());
 
-    public Report saveOrUpdateReport(Report report) {
-        return reportRepository.save(report);
+        // 更新対象の従業員が存在しない場合はエラー
+        if (existingReport == null) {
+            return ErrorKinds.NOT_FOUND_ERROR;
+        }
+
+        // 更新処理の実装
+        existingReport.setTitle(report.getTitle());
+        existingReport.setContent(report.getContent());
+        existingReport.setUpdatedAt(LocalDateTime.now());
+
+        reportRepository.save(existingReport);
+        return ErrorKinds.SUCCESS;
     }
 
 
@@ -105,10 +122,10 @@ public class ReportService {
 //        // 今の日付を取得
 //        LocalDateTime now = LocalDateTime.now();
 //
-//        // 同じユーザーかつ同じ日付かつ今のIDと一致するものを更新するロジック
+//        // 同じユーザーかつ同じ日付かつ今のIDと一致するものを更新
 //        if (existingEmployee.getCode().equals(updatedEmployee.getCode()) &&
-//                existingEmployee.getCreatedAt().toLocalDate().isEqual(updatedEmployee.getCreatedAt().toLocalDate()) &&
-//                existingEmployee.getcode().equals(id)) {
+//            existingEmployee.getCreatedAt().toLocalDate().isEqual(updatedEmployee.getCreatedAt().toLocalDate()) &&
+//            existingEmployee.getcode().equals(id)) {
 //            existingEmployee.setName(updatedEmployee.getName());
 //            existingEmployee.setPassword(updatedEmployee.getPassword());
 //            existingEmployee.setRole(updatedEmployee.getRole());
