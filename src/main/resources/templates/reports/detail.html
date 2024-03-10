@@ -1,71 +1,75 @@
 <!DOCTYPE html>
-<html class="h-100" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" class="h-100">
 <head th:replace="common/header :: head_fragment(title=日報詳細)"></head>
 
 <body class="h-100 overflow-hidden">
     <div class="row h-100">
-        <div class="h-100 p-3 mb-2 bg-dark text-white col-sm-2">
+        <div class="col-sm-2 h-100 p-3 mb-2 bg-dark text-white">
             <nav th:replace="common/side :: copy"></nav>
         </div>
 
-        <div class="mt-3 h-100 col-sm-10">
+        <div class="col-sm-10 h-100 mt-3">
             <div class="container-fluid p-0">
-                <h1 class="h3 mb-3">日報詳細</h1>
+                <h1 class="h3 mb-3" th:text="日報詳細"></h1>
             </div>
 
-            <div class="mb-3 col-12 col-xxl-6">
+            <div class="col-12 col-xxl-6 mb-3">
+
                 <div class="col-xl-12">
                     <div class="card">
                         <div class="card-body mb-5">
+
                             <div class="wizard wizard-success mb-4">
-                                    <div class="mb-3 d-flex">
-                                        <label for="reportDate" class="form-label me-2 w-25">日付</label>
-                                        <input type="text" class="form-control" id="reportDate" th:value="${report.reportDate}" disabled>
-                                    </div>
-                                    <div class="mb-3 d-flex">
-                                        <label for="employeeName" class="form-label me-2 w-25">氏名</label>
-                                        <input type="text" class="form-control" id="employeeName" th:value="${report.employee.name}" disabled>
-                                    </div>
-                                    <div class="mb-3 d-flex">
-                                        <label for="title" class="form-label me-2 w-25">タイトル</label>
-                                        <input type="text" class="form-control" id="title" th:value="${report.title}" disabled>
-                                    </div>
-                                    <div class="mb-3 d-flex">
-                                        <label for="content" class="form-label me-2 w-25">内容</label>
-                                        <textarea class="form-control" id="content" rows="3" disabled th:text="${report.content}"></textarea>
-                                    </div>
-                                    <div class="mb-3 d-flex">
-                                        <label for="createdAt" class="form-label me-2 w-25">登録日時</label>
-                                        <input type="text" class="form-control" id="createdAt" th:value="${#temporals.format(report.createdAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
-                                    </div>
-                                    <div class="mb-3 d-flex">
-                                        <label for="updatedAt" class="form-label me-2 w-25">更新日時</label>
-                                        <input type="text" class="form-control" id="updatedAt" th:value="${#temporals.format(report.updatedAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
-                                    </div>
 
-                                        <div class="mt-5 row g-1">
-                                        <div class="col-auto">
-                                            <a th:href="@{'/reports/' + ${report.id} + '/update'}" class="btn btn-primary">更新</a>
-                                        </div>
-
-                                        <div class="col-auto">
-                                            <form name="form" th:action="@{/reports/{id}/delete(id=${report.id})}" th:method="post">
-
-                                                <input type="submit" value="削除" class="btn btn-primary">
-                                            </form>
-                                        </div>
-                                        <div class="col-auto">
-                                            <a href="/reports" class="btn btn-primary">戻る</a>
-                                        </div>
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th class="w-25">日付</th>
+                                        <td class="align-middle" th:text="${report.reportDate}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>氏名</th>
+                                        <td class="align-middle" th:text="${report.employee.name}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>タイトル</th>
+                                        <td class="align-middle" th:text="${report.title}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>内容</th>
+                                        <td class="align-middle" th:text="${report.content}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>登録日時</th>
+                                        <td class="align-middle" th:text="${#temporals.format(report.createdAt, 'yyyy-MM-dd hh:mm:ss')}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>更新日時</th>
+                                        <td class="align-middle" th:text="${#temporals.format(report.updatedAt, 'yyyy-MM-dd hh:mm:ss')}"></td>
+                                    </tr>
+                                </table>
+                                <div class="row g-1 mt-5">
+                                    <div class="col-auto">
+                                        <a th:href="@{'/reports/' + ${report.id} + '/update'}" class="btn btn-primary">更新</a>
                                     </div>
-
-                                <span th:if="${deleteError} neq null" th:text="${deleteError}" class="text-danger"></span>
+                                    <div class="col-auto">
+                                        <form name="form" th:action="@{/reports/{id}/delete(id=${report.id})}" th:method="post">
+                                            <input type="submit" value="削除" class="btn btn-primary">
+                                        </form>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a href="/reports" class="btn btn-primary">戻る</a>
+                                    </div>
+                                </div>
+                                <span th:if="${deleteError != null}" th:text="${deleteError}" class="text-danger"></span>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </body>
+
 </html>

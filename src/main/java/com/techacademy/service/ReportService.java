@@ -35,17 +35,17 @@ public class ReportService {
                 .orElse(null);
 
     }
-//    public List<Report> findAllReportsForUser(UserDetail userDetail) {
-//        if (userDetail.getEmployee().getRole() == Employee.Role.GENERAL) {
-//            // 一般権限のユーザーの場合、自分が登録した日報情報のみを取得
-//            return reportRepository.findByEmployee(userDetail.getEmployee());
-//        } else if (userDetail.getEmployee().getRole() == Employee.Role.ADMIN) {
-//            // 管理者権限のユーザーの場合、全ての日報情報を取得
-//            return reportRepository.findAll();
-//        }
-//        // その他の権限の場合、空のリストを返すなどの適切な処理を行う
-//        return Collections.emptyList();
-//    }
+    public List<Report> findAllReportsForUser(UserDetail userDetail) {
+        if (userDetail.getEmployee().getRole() == Employee.Role.GENERAL) {
+            // 一般権限のユーザーの場合、自分が登録した日報情報のみを取得
+            return reportRepository.findByEmployee(userDetail.getEmployee());
+        } else if (userDetail.getEmployee().getRole() == Employee.Role.ADMIN) {
+            // 管理者権限のユーザーの場合、全ての日報情報を取得
+            return reportRepository.findAll();
+        }
+        // その他の権限の場合、空のリストを返すなどの適切な処理を行う
+        return Collections.emptyList();
+    }
     @Transactional
     public ErrorKinds save(Report report) {
         if (reportRepository.existsByEmployeeAndReportDate(report.getEmployee(), report.getReportDate())) {
