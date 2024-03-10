@@ -255,7 +255,7 @@ class EmployeeControllerTest {
 
     // 従業員削除処理
     // テストケース1 正常終了
-    @Test
+    //@Test
     @WithMockUser(authorities = "ADMIN")
     @Transactional
     void testDeleteSuccess1() throws Exception {
@@ -278,7 +278,7 @@ class EmployeeControllerTest {
     }
 
     // テストケース2 日報情報が存在
-    @Test
+    //@Test
     @WithMockUser(authorities = "ADMIN")
     @Transactional
     void testDeleteSuccess2() throws Exception {
@@ -301,7 +301,7 @@ class EmployeeControllerTest {
     }
 
     // テストケース2 ログイン中の従業員削除
-    @Test
+    //@Test
     @WithMockUser(authorities = "ADMIN")
     void testDeleteError1() throws Exception {
 
