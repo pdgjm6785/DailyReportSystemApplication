@@ -29,17 +29,10 @@
                                             <span th:if="${reportDateError} neq null" th:text="${reportDateError}" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    <!-- 仮修正　-->
-                                        <div class="mb-3">
-                                            <label class="form-label" for="name">氏名</label>
-                                            <p class="mb-1"></p>
-                                            <div class="col-md-7">
-                                            <input class="form-control" type="text" th:field="*{employee.name}" disabled>
-                                    <!-- 仮修正 -->
-                                        </div>
-                                     </div>
-                                 <!--  <input class="form-control" type="text" th:value="${employee.name}" disabled>   -->
-                                 <!--   <span class="text-danger"></span>   -->
+                                    <div class="mb-3">
+                                    <label class="form-label">氏名</label>
+                                    <p class="mb-1" th:text="${report.employee.name}"></p>
+                                    </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="title">タイトル</label>
