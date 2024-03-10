@@ -79,8 +79,7 @@ public class ReportController {
         }
         return "redirect:/reports";
     }
-
-    // 日報詳細画面を表示するメソッド
+ // 日報詳細画面を表示するメソッド
     @GetMapping("/{id}/")
     public String showReportDetail(@PathVariable("id") Integer id, Model model) {
         Report report = reportService.findReportById(id);
@@ -102,27 +101,49 @@ public class ReportController {
         return "reports/update";
     }
 
-    // 従業員更新処理//修正3.5
+
     @PostMapping(value = "/{id}/update")
     public String update(@PathVariable Integer id, @ModelAttribute("report") @Validated Report report,
             BindingResult res, RedirectAttributes redirectAttributes ,Model model,@AuthenticationPrincipal UserDetail userDetail) {
         report.setEmployee(userDetail.getEmployee());
-        //修正前
+
         if (res.hasErrors()) {
             return edit(null, model, report);
         }
-            //EmployeeServiceのupdateメソッドの呼び出し
-            ErrorKinds result = reportService.update(report);
 
-            if (ErrorMessage.contains(result)) {
-                model.addAttribute(ErrorMessage.getErrorName(result), ErrorMessage.getErrorValue(result));
-                return edit(null, model, report);
+        // 更新処理を行う前に日付の重複チェックを行う
+        ErrorKinds result = reportService.update(report);
 
-            }
-
-     //更新画面から詳細画面呼び出し
+        if (ErrorMessage.contains(result)) {
+            // エラーメッセージが発生した場合、エラーメッセージをモデルに追加し、編集画面に戻る
+            model.addAttribute(ErrorMessage.getErrorName(result), ErrorMessage.getErrorValue(result));
+            return edit(null, model, report);
+        }
+        // 更新が成功した場合、日報一覧画面にリダイレクトする
         return "redirect:/reports";
     }
+
+//    // 従業員更新処理//修正3.5
+//    @PostMapping(value = "/{id}/update")
+//    public String update(@PathVariable Integer id, @ModelAttribute("report") @Validated Report report,
+//            BindingResult res, RedirectAttributes redirectAttributes ,Model model,@AuthenticationPrincipal UserDetail userDetail) {
+//        report.setEmployee(userDetail.getEmployee());
+//        //修正前
+//        if (res.hasErrors()) {
+//            return edit(null, model, report);
+//        }
+//            //EmployeeServiceのupdateメソッドの呼び出し
+//            ErrorKinds result = reportService.update(report);
+//
+//            if (ErrorMessage.contains(result)) {
+//                model.addAttribute(ErrorMessage.getErrorName(result), ErrorMessage.getErrorValue(result));
+//                return edit(null, model, report);
+//
+//            }
+//
+//     //更新画面から詳細画面呼び出し
+//        return "redirect:/reports";
+//    }
 
     // 日報削除処理
     @PostMapping("/{id}/delete")
@@ -148,4 +169,3 @@ public class ReportController {
     }
 
     }
-
