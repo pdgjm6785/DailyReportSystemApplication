@@ -41,12 +41,22 @@ public class ReportController {
 
     // 日報一覧画面を表示するメソッド
     @GetMapping("")
-    public String listReports(Model model) {
-        List<Report> reportList = reportService.findAllReports();
+    public String list(Model model,@AuthenticationPrincipal UserDetail userDetail) {
+        List<Report> reportList;
+        if(userDetail.getEmployee().getRole() == Employee.Role.ADMIN) {
+            reportList = reportService.findAllReports();
+
+        }
+        else {
+            reportList = reportService.findByEmployee(userDetail.getEmployee());
+        }
+
         model.addAttribute("reportList", reportList);
         model.addAttribute("listSize", reportList.size());
         return "reports/list";
     }
+
+
 
     @GetMapping("/add")
     public String create(@ModelAttribute Report report, Model model, @AuthenticationPrincipal UserDetail userDetail ) {
@@ -93,9 +103,10 @@ public class ReportController {
     }
 
     // 従業員更新処理//修正3.5
-    @PostMapping(value = "/{iD}/update")
+    @PostMapping(value = "/{id}/update")
     public String update(@PathVariable Integer id, @ModelAttribute("report") @Validated Report report,
-            BindingResult res, RedirectAttributes redirectAttributes ,Model model) {
+            BindingResult res, RedirectAttributes redirectAttributes ,Model model,@AuthenticationPrincipal UserDetail userDetail) {
+        report.setEmployee(userDetail.getEmployee());
         //修正前
         if (res.hasErrors()) {
             return edit(null, model, report);
@@ -106,10 +117,11 @@ public class ReportController {
             if (ErrorMessage.contains(result)) {
                 model.addAttribute(ErrorMessage.getErrorName(result), ErrorMessage.getErrorValue(result));
                 return edit(null, model, report);
+
             }
 
      //更新画面から詳細画面呼び出し
-        return "redirect:/reports/";
+        return "redirect:/reports";
     }
 
 

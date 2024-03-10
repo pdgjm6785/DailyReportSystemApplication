@@ -33,16 +33,16 @@ public class Report {
 
     @Column(name = "report_date", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "日付を入力してください")
+    @NotNull(message = "値を入力してください")
     private LocalDate reportDate;
 
     @Column(name = "title", length = 100, nullable = false)
-    @NotBlank(message = "タイトルを入力してください")
+    @NotBlank(message = "値を入力してください")
     @Size(max = 100, message = "100文字以下で入力してください")
     private String title;
 
     @Column(name = "content", columnDefinition = "LONGTEXT", nullable = false)
-    @NotBlank(message = "内容を入力してください")
+    @NotBlank(message = "値を入力してください")
     @Size(max = 600, message = "600文字以下で入力してください")
     private String content;
 
