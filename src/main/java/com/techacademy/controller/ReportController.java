@@ -124,7 +124,6 @@ public class ReportController {
         return "redirect:/reports";
     }
 
-
     // 日報削除処理
     @PostMapping("/{id}/delete")
     public String deleteReport(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
